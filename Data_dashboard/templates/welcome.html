@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <h1>Welcome, {{ username }}</h1>
+    <a href="/" class="button">Logout</a>
+    <a href="/info" class="button">Info</a>
+    <form method="post" action="/welcome">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Availability</th>
+                    <th>Add to Favorites</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.price }}</td>
+                    <td>{{ book.availability }}</td>
+                    <td><button type="submit" name="fav" value="{{ book.title }}">Add to Fav</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    <div>
+
+</body>
+</html>

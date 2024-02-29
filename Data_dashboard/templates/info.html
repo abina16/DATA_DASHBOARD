@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Information</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Favorite Books</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Availability</th>
+                <th>Action</th> <!-- New column for remove button -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in favorite_books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.price }}</td>
+                <td>{{ book.availability }}</td>
+                <td>
+                    <form method="post" action="/remove_favorite">
+                        <input type="hidden" name="title" value="{{ book.title }}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Button to go back to welcome page -->
+    <a href="/welcome"><button>Back to Welcome</button></a>
+    <h1>Price Distribution</h1>
+    {% if plot %}
+    <img src="data:image/png;base64,{{ plot }}" alt="Price Distribution">
+    {% else %}
+    <p>No price distribution available.</p> <!-- Updated the message -->
+    {% endif %}
+
+</body>
+</html>
